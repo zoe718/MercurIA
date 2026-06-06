@@ -15,6 +15,15 @@ EventType = Literal[
     "tecnologico",
 ]
 EventStatus = Literal["activo", "planificado", "finalizado"]
+VoronoiEventType = Literal[
+    "fiestas",
+    "festivales",
+    "deportivos",
+    "culturales",
+    "turisticos",
+    "religioso",
+    "gastronomico",
+]
 
 
 class Coordinates(BaseModel):
@@ -182,6 +191,18 @@ class MapLayer(BaseModel):
     endpoint: str
     defaultVisible: bool
     description: str
+
+
+class VoronoiCellProperties(BaseModel):
+    id: str
+    name: str
+    borough: str
+    eventType: VoronoiEventType
+    score: int
+    rank: int
+    estimatedMdp: int
+    weightFormula: str
+    topVariables: list[str]
 
 
 class PymeMatch(BaseModel):

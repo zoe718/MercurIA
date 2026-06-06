@@ -1,8 +1,9 @@
 from fastapi import APIRouter
 
-from app.models.schemas import HeatmapPoint, MapLayer, VenueScore
+from app.models.schemas import GeoJsonFeatureCollection, HeatmapPoint, MapLayer, VenueScore, VoronoiEventType
 from app.services.data_store import get_venue_scores
 from app.services.geo_service import heatmap, layers
+from app.services.voronoi_service import build_voronoi
 
 router = APIRouter(prefix="/map", tags=["map"])
 
@@ -13,6 +14,11 @@ def venue_score(eventType: str | None = None) -> list[VenueScore]:
     if eventType:
         scores = [score for score in scores if eventType in score.compatibleTypes]
     return scores
+
+
+@router.get("/voronoi", response_model=GeoJsonFeatureCollection)
+def voronoi(event_type: VoronoiEventType = "festivales") -> GeoJsonFeatureCollection:
+    return build_voronoi(event_type)
 
 
 @router.get("/heatmap", response_model=list[HeatmapPoint])

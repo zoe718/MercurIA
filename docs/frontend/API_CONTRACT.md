@@ -4,11 +4,12 @@ Este documento registra lo que el frontend necesita del backend. Es una guia de 
 
 ## Estado actual
 
-- Frontend: inicializado en `frontend/` con Next.js, landing en `/`, mapa Mapbox full-screen en `/map` y datos demo locales.
+- Frontend: inicializado en `frontend/` con Next.js, landing en `/`, mapa Mapbox full-screen en `/map`, capa Voronoi local y datos demo locales.
 - Backend: inicializado en `backend/` con FastAPI, datos sinteticos JSON, OpenAPI y contrato publico camelCase.
 - Fuente base: [../IDEA.md](../IDEA.md).
 - Tema visual: [../FRONTEND_THEME.md](../FRONTEND_THEME.md).
 - Mock actual: `frontend/src/data/demo.ts`.
+- Voronoi local actual: `frontend/src/data/voronoi.ts`.
 - Mapbox: token publico local en `frontend/.env.local`; plantilla sin token real en `frontend/.env.example`.
 
 ## Backend local
@@ -31,7 +32,7 @@ Los endpoints con IA (`GET /api/analysis/{eventId}` y `POST /api/notifications/d
 | Pantalla | Datos requeridos | Endpoint esperado | Estado |
 |---|---|---|---|
 | Landing `/` | Metricas resumen, evento destacado y marcadores de referencia | `GET /api/events/current`, `GET /api/analysis/summary` | Backend listo |
-| Mapa `/map` | Eventos con `lng/lat`, capas, heatmap, scores de sede | `GET /api/events/geojson`, `GET /api/map/layers`, `GET /api/map/heatmap`, `GET /api/map/venue-score` | Backend listo |
+| Mapa `/map` | Eventos con `lng/lat`, capas, heatmap, scores de sede, Voronoi por tipo de evento | `GET /api/events/geojson`, `GET /api/map/layers`, `GET /api/map/heatmap`, `GET /api/map/venue-score`, `GET /api/map/voronoi?event_type={type}` | Backend listo; frontend aun usa mock local para Voronoi |
 | Analisis de evento | Detalle, antes/despues, sectores, empleo, narrativa IA | `GET /api/events/{eventId}`, `GET /api/analysis/{eventId}` | Backend listo; requiere Anthropic para narrativa |
 | Alta por documento | Resultado de extraccion y vista previa | `POST /api/events/upload` | Pendiente |
 | Notificaciones | MiPyMEs elegibles, borrador IA, historial | `GET /api/notifications/pymes`, `POST /api/notifications/draft`, `GET /api/notifications/log` | Backend listo; draft requiere Anthropic |
@@ -75,6 +76,26 @@ Los endpoints con IA (`GET /api/analysis/{eventId}` y `POST /api/notifications/d
 - `tags`
 - `activatedSectors`
 
+## Shape publico de Voronoi
+
+`GET /api/map/voronoi?event_type=festivales` devuelve:
+
+```ts
+FeatureCollection<Polygon | MultiPolygon, {
+  id: string;
+  name: string;
+  borough: string;
+  eventType: "fiestas" | "festivales" | "deportivos" | "culturales" | "turisticos" | "religioso" | "gastronomico";
+  score: number;
+  rank: number;
+  estimatedMdp: number;
+  weightFormula: string;
+  topVariables: string[];
+}>
+```
+
+El frontend actual genera celdas reales con Turf y las recorta al limite oficial CDMX. El backend ya expone un endpoint sintetico compatible con el mismo shape; antes de reemplazar la simulacion local por backend, validar visualmente que la geometria cumpla el nivel de precision esperado.
+
 ## Endpoints implementados
 
 - `GET /api/health`
@@ -86,11 +107,23 @@ Los endpoints con IA (`GET /api/analysis/{eventId}` y `POST /api/notifications/d
 - `GET /api/analysis/{eventId}`
 - `POST /api/analysis/simulate`
 - `GET /api/map/venue-score`
+- `GET /api/map/voronoi`
 - `GET /api/map/heatmap`
 - `GET /api/map/layers`
 - `GET /api/notifications/pymes`
 - `POST /api/notifications/draft`
 - `GET /api/notifications/log`
+
+## Mocks temporales
+
+Mientras el frontend termina de conectarse al backend, mantiene mocks basados en `docs/IDEA.md`.
+
+- `metrics`: indicadores resumen para la landing.
+- `events`: eventos con coordenadas `lng/lat` para Mapbox, derrama, afluencia, empleo, negocios beneficiados, sectores e insight IA simulado.
+- `pymeMatches`: MiPyMEs elegibles para el panel de notificaciones.
+- `cdmxBoundary`: limite oficial CDMX en `frontend/src/data/cdmx-boundary.json`, obtenido desde la capa publica `Limite de la Ciudad de Mexico`.
+- `voronoiSeedSites`: 18 sitios-semilla simulados para generar celdas Voronoi dentro de CDMX.
+- `voronoiEventProfiles`: formulas y variables por tipo de evento.
 
 ## Estados de UI requeridos
 
@@ -103,5 +136,5 @@ Los endpoints con IA (`GET /api/analysis/{eventId}` y `POST /api/notifications/d
 ## Cambios pendientes
 
 - Conectar el frontend al backend reemplazando los mocks locales de `frontend/src/data/demo.ts`.
+- Evaluar si `frontend/src/data/voronoi.ts` debe seguir generando geometria real con Turf o consumir `GET /api/map/voronoi?event_type={type}`.
 - Implementar `POST /api/events/upload` para alta por documento.
-- Agregar Voronoi real cuando se integre capa geoespacial avanzada.

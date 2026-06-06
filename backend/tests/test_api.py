@@ -94,6 +94,20 @@ def test_geojson_is_valid_feature_collection():
     assert len(feature["geometry"]["coordinates"]) == 2
 
 
+def test_voronoi_endpoint_matches_frontend_contract():
+    response = client.get("/api/map/voronoi", params={"event_type": "festivales"})
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["type"] == "FeatureCollection"
+    assert len(payload["features"]) == 18
+    feature = payload["features"][0]
+    assert feature["geometry"]["type"] == "Polygon"
+    assert {"id", "name", "borough", "eventType", "score", "rank", "estimatedMdp", "weightFormula", "topVariables"} <= set(
+        feature["properties"]
+    )
+    assert feature["properties"]["eventType"] == "festivales"
+
+
 def test_simulate_returns_confidence_bands():
     response = client.post(
         "/api/analysis/simulate",
