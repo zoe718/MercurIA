@@ -36,6 +36,14 @@ Este archivo registra decisiones tecnicas y de diseno en formato ADR corto.
 
 **Impacto:** `frontend/src/data/demo.ts` usa coordenadas `lng/lat`; `frontend/src/lib/mapbox.ts` centraliza centro y limites CDMX; los controles nativos de Mapbox se muestran sobre `/map`. El token se carga desde `NEXT_PUBLIC_MAPBOX_TOKEN` en `.env.local`.
 
+## 2026-06-06 - Voronoi por tipo de evento
+
+**Decision:** generar una capa Voronoi en Mapbox desde 18 sitios-semilla simulados y recalcular score/ranking por tipo de evento.
+
+**Motivo:** la planeación necesita visualizar zonas de influencia delimitadas a CDMX y ponderadas por variables distintas para fiestas, festivales, deportivos, culturales, turísticos, religioso y gastronómico.
+
+**Impacto:** `frontend/src/data/voronoi.ts` contiene la simulación actual con Turf; cuando backend exista, debe reemplazarse por `GET /api/map/voronoi?event_type={type}` respetando las propiedades documentadas en `VORONOI.md`.
+
 ## 2026-06-06 - Override de PostCSS
 
 **Decision:** agregar `overrides.postcss` en `frontend/package.json`.

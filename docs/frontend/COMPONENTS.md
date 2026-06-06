@@ -14,6 +14,8 @@ El frontend esta inicializado en `frontend/` con landing en `/` y mapa Mapbox fu
 | `LandingPreviewMap` | Mapa Mapbox no interactivo como escena visual de `/` | Token Mapbox, eventos demo | Implementado |
 | `FullScreenMap` | Experiencia Mapbox full-screen con modos, filtros, marcadores y panel flotante | Eventos, scores y MiPyMEs demo | Implementado |
 | `EventSheet` | Panel flotante del evento seleccionado | Evento seleccionado y modo actual | Implementado |
+| `VoronoiBlock` | Detalle de celda Voronoi seleccionada | Score, fórmula, ranking y variables | Implementado |
+| `VoronoiLegend` | Leyenda compacta de score por tipo de evento | Color y etiqueta del perfil activo | Implementado |
 | `PlanningBlock` | Scores de zonas para modo Planear | `venueScores` | Implementado |
 | `AnalysisBlock` | Narrativa y sectores para modo Analizar | Evento seleccionado | Implementado |
 | `MonitoringBlock` | MiPyMEs listas para modo Monitorear | `pymeMatches` | Implementado |
@@ -24,3 +26,4 @@ El frontend esta inicializado en `frontend/` con landing en `/` y mapa Mapbox fu
 - Los componentes de datos deben exponer estados `loading`, `empty`, `error` y `demo`.
 - Los componentes reutilizables deben documentarse aqui antes de crecer en complejidad.
 - Los controles principales del mapa deben vivir sobre el mapa, no en una pantalla de dashboard separada.
+- La capa Voronoi debe renderizarse como source/layers de Mapbox y no como SVG externo.

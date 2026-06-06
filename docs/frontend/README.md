@@ -14,6 +14,7 @@ Esta carpeta es el contrato vivo del frontend de MercurIA. Su objetivo es manten
 - [API_CONTRACT.md](API_CONTRACT.md): datos, endpoints y estados que el frontend espera del backend.
 - [UI_FLOWS.md](UI_FLOWS.md): flujos de usuario por pantalla y modo de uso.
 - [COMPONENTS.md](COMPONENTS.md): componentes planeados o creados, responsabilidades y props.
+- [VORONOI.md](VORONOI.md): contrato de capa Voronoi, variables por tipo de evento y simulación.
 - [DECISIONS.md](DECISIONS.md): decisiones tecnicas y de diseno en formato ADR corto.
 - [CHANGELOG.md](CHANGELOG.md): bitacora cronologica de cambios frontend.
 

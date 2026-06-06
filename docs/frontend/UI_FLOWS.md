@@ -21,9 +21,10 @@ Flujo:
 
 1. Usuario entra a `/map`.
 2. Elige modo: `Planear`, `Analizar` o `Monitorear`.
-3. Ajusta filtros por tipo de evento desde controles flotantes sobre el mapa.
-4. El mapa Mapbox actualiza pines de eventos y scores de sede.
-5. Al seleccionar un evento, el mapa vuela a la ubicacion y actualiza el panel flotante.
+3. Ajusta el tipo de evento Voronoi desde controles flotantes sobre el mapa.
+4. El mapa Mapbox recalcula celdas Voronoi, color, score y ranking.
+5. Al seleccionar una celda, el panel muestra fórmula y variables usadas.
+6. Al seleccionar un evento, el mapa vuela a la ubicacion y actualiza el panel flotante.
 
 ## Analisis de evento
 
