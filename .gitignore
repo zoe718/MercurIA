@@ -12,6 +12,11 @@ out/
 dist/
 build/
 *.tsbuildinfo
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+.npm-cache/
 
 # Environment
 .env

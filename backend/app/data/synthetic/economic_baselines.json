@@ -1,0 +1,29 @@
+{
+  "boroughMultipliers": {
+    "Cuauhtemoc": 1.35,
+    "Miguel Hidalgo": 1.28,
+    "Benito Juarez": 1.22,
+    "Alvaro Obregon": 1.1,
+    "Coyoacan": 1.08,
+    "Iztacalco": 1.04,
+    "Tlalpan": 0.98,
+    "Xochimilco": 0.95,
+    "Iztapalapa": 0.92,
+    "Gustavo A. Madero": 0.88,
+    "Azcapotzalco": 0.9,
+    "Venustiano Carranza": 0.94,
+    "Tlahuac": 0.82,
+    "Magdalena Contreras": 0.84,
+    "Cuajimalpa": 1.12,
+    "Milpa Alta": 0.78
+  },
+  "hotelOccupancy": {
+    "Cuauhtemoc": 0.78,
+    "Miguel Hidalgo": 0.82,
+    "Benito Juarez": 0.68,
+    "Iztacalco": 0.58,
+    "Iztapalapa": 0.42,
+    "Xochimilco": 0.46
+  },
+  "source": "synthetic-demo"
+}

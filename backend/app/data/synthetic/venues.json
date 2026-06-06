@@ -1,0 +1,52 @@
+[
+  {
+    "zone": "Corredor Centro Historico",
+    "borough": "Cuauhtemoc",
+    "score": 92,
+    "estimatedMdp": 1480,
+    "coordinates": { "lng": -99.1332, "lat": 19.4326 },
+    "reason": "Alta densidad de restaurantes, transporte, hoteles y comercio local.",
+    "capacity": 500000,
+    "compatibleTypes": ["cultural", "civico", "religioso", "gastronomico"]
+  },
+  {
+    "zone": "Ciudad Deportiva - Foro Sol",
+    "borough": "Iztacalco",
+    "score": 88,
+    "estimatedMdp": 2360,
+    "coordinates": { "lng": -99.0875, "lat": 19.401 },
+    "reason": "Gran capacidad de recinto, conectividad masiva y derrama extendida en hoteleria.",
+    "capacity": 135000,
+    "compatibleTypes": ["deportivo", "musical", "ferial"]
+  },
+  {
+    "zone": "Chapultepec - Polanco",
+    "borough": "Miguel Hidalgo",
+    "score": 84,
+    "estimatedMdp": 1720,
+    "coordinates": { "lng": -99.1917, "lat": 19.426 },
+    "reason": "Buena oferta hotelera, gasto promedio alto y conectividad turistica.",
+    "capacity": 80000,
+    "compatibleTypes": ["ferial", "tecnologico", "cultural", "gastronomico"]
+  },
+  {
+    "zone": "Coyoacan Cultural",
+    "borough": "Coyoacan",
+    "score": 79,
+    "estimatedMdp": 760,
+    "coordinates": { "lng": -99.1617, "lat": 19.3467 },
+    "reason": "Fuerte historial cultural, restaurantes y comercios de barrio.",
+    "capacity": 65000,
+    "compatibleTypes": ["cultural", "gastronomico", "religioso"]
+  },
+  {
+    "zone": "Xochimilco Lacustre",
+    "borough": "Xochimilco",
+    "score": 76,
+    "estimatedMdp": 930,
+    "coordinates": { "lng": -99.1028, "lat": 19.257 },
+    "reason": "Atractivo turistico consolidado y alta activacion de alimentos y artesanias.",
+    "capacity": 80000,
+    "compatibleTypes": ["cultural", "religioso", "gastronomico"]
+  }
+]

@@ -1,0 +1,1 @@
+"""MercurIA backend package."""
