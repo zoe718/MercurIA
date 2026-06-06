@@ -17,3 +17,27 @@ Este archivo registra decisiones tecnicas y de diseno en formato ADR corto.
 **Motivo:** ya existe una paleta aprobada para MercurIA y debe mantenerse consistente desde el inicio del frontend.
 
 **Impacto:** cualquier implementacion visual futura debe mapear los tokens `background`, `primary`, `secondary`, `surface`, `text`, `accent`, `success`, `warning` y `danger`.
+
+## 2026-06-06 - Frontend inicial con consola operativa
+
+**Decision:** crear el frontend en `frontend/` con Next.js App Router, React, TypeScript, CSS variables y `lucide-react`.
+
+**Motivo:** el proyecto necesita una primera pantalla usable mientras backend avanza en paralelo. La raiz `/` abre una consola operativa en vez de una landing de marketing.
+
+**Impacto:** los datos viven temporalmente en `frontend/src/data/demo.ts`; cuando el backend este listo, el frontend debe reemplazar esos mocks por un cliente API alineado con `API_CONTRACT.md`.
+
+## 2026-06-06 - Override de PostCSS
+
+**Decision:** agregar `overrides.postcss` en `frontend/package.json`.
+
+**Motivo:** `npm audit` reporto una vulnerabilidad moderada transitiva en la version de PostCSS resuelta por Next.js.
+
+**Impacto:** `npm install` resuelve PostCSS a una version parcheada y `npm audit --audit-level=moderate` queda limpio.
+
+## 2026-06-06 - Demo responsive limpia
+
+**Decision:** declarar `viewport` en `frontend/src/app/layout.tsx` y desactivar `devIndicators` en `frontend/next.config.mjs`.
+
+**Motivo:** la consola debe probarse bien en movil y el indicador flotante de Next.js tapaba controles durante la demo local.
+
+**Impacto:** los breakpoints moviles se aplican correctamente y la vista local en `npm run dev` queda libre de overlays de desarrollo.

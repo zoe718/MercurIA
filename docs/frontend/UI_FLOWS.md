@@ -2,16 +2,18 @@
 
 Este documento describe los flujos que debe soportar el frontend. Cada flujo debe mantenerse alineado con el contrato API y la experiencia definida en [../IDEA.md](../IDEA.md).
 
-## Landing
+## Consola principal (`/`)
 
-Objetivo: explicar el valor de MercurIA rapidamente y llevar al usuario al mapa o a un analisis de ejemplo.
+Objetivo: abrir directamente una vista operativa para monitorear, analizar y planear eventos con datos sinteticos mientras el backend se integra.
 
 Flujo:
 
 1. Usuario entra a `/`.
-2. Ve una propuesta clara de inteligencia economica para eventos en CDMX.
-3. Puede abrir el mapa principal.
-4. Puede explorar una derrama de ejemplo.
+2. Revisa metricas principales de derrama, eventos, MiPyMEs y alertas.
+3. Cambia el modo entre `Monitorear`, `Analizar` y `Planear`.
+4. Filtra por tipo de evento.
+5. Selecciona un evento desde el mapa sintetico o la tira de eventos.
+6. Revisa detalle economico, sectores, narrativa simulada y MiPyMEs relacionadas.
 
 ## Mapa CDMX
 
@@ -19,10 +21,10 @@ Objetivo: monitorear, analizar y planear eventos sobre una vista geografica de C
 
 Flujo:
 
-1. Usuario entra a `/map`.
+1. Usuario usa el mapa dentro de `/`.
 2. Elige modo: `Planear`, `Analizar` o `Monitorear`.
 3. Ajusta filtros por tipo de evento, fecha y alcaldia.
-4. El mapa actualiza eventos, heatmap, Voronoi o score de sedes segun el modo.
+4. El mapa actualiza eventos y scores de sede con datos sinteticos.
 5. Al seleccionar un evento o zona, aparece un panel de detalle.
 
 ## Analisis de evento
@@ -31,7 +33,7 @@ Objetivo: comparar derrama estimada vs real, sectores beneficiados y narrativa I
 
 Flujo:
 
-1. Usuario entra desde el mapa o una lista de eventos.
+1. Usuario selecciona un evento desde el mapa o la tira de eventos.
 2. La pantalla carga datos del evento y metricas de analisis.
 3. Usuario revisa graficas, empleo, sectores y narrativa.
 4. Puede pasar al flujo de notificaciones para MiPyMEs relacionadas.

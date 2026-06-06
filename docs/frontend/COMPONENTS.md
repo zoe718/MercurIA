@@ -4,27 +4,25 @@ Este registro documenta componentes planeados o creados. Debe actualizarse cuand
 
 ## Estado actual
 
-El frontend aun no esta inicializado. Los componentes listados aqui son planeados y se basan en `docs/IDEA.md`.
+El frontend esta inicializado en `frontend/` con una consola operativa en `/`. Los componentes viven por ahora en `frontend/src/components/MercuriaDashboard.tsx` y usan datos de `frontend/src/data/demo.ts`.
 
 ## Componentes planeados
 
 | Componente | Responsabilidad | Datos/props esperadas | Estado |
 |---|---|---|---|
-| `AppShell` | Layout principal con navegacion y area de trabajo | Usuario/demo mode, rutas activas | Planeado |
-| `TopBar` | Acciones globales, busqueda y estado demo | Titulo, acciones, estado API | Planeado |
-| `Sidebar` | Navegacion entre mapa, analisis y notificaciones | Ruta activa, contadores opcionales | Planeado |
-| `CDMXMap` | Render del mapa y capas geoespaciales | Eventos GeoJSON, capas activas, modo | Planeado |
-| `MapFilters` | Filtros por tipo, alcaldia y fecha | Valores actuales, callbacks de cambio | Planeado |
-| `MapModeSelector` | Selector Planear/Analizar/Monitorear | Modo actual, callback | Planeado |
-| `EventPopup` | Resumen de evento seleccionado | Evento, CTA a analisis | Planeado |
-| `VenueScoreCard` | Resultado de idoneidad de sede/zona | Score, derrama estimada, razones | Planeado |
-| `DerramaChart` | Grafica de derrama estimada vs real | Series de datos y moneda | Planeado |
-| `SectorBreakdown` | Impacto por giro economico | Sectores, porcentajes, montos | Planeado |
-| `AIInsights` | Narrativa generada por IA | Texto, modelo, estado demo | Planeado |
-| `EventUploader` | Alta por documento | Archivo, progreso, resultado extraido | Planeado |
-| `PymeSelector` | Seleccion de MiPyMEs elegibles | Lista, filtros, seleccion | Planeado |
-| `MessageComposer` | Borrador y edicion de mensaje | Mensaje, destinatarios, evento | Planeado |
-| `NotificationLog` | Historial de notificaciones | Registros, filtros | Planeado |
+| `MercuriaDashboard` | Consola principal con estado de modo, filtro y evento seleccionado | Datos demo locales | Implementado |
+| `MetricCard` | Tarjetas resumen de derrama, eventos, MiPyMEs y alertas | `label`, `value`, `trend`, `tone` | Implementado |
+| `CDMXMap` | Mapa sintetico con zonas, scores y pines seleccionables | Eventos, modo, evento seleccionado, callback | Implementado |
+| `EventSummary` | Detalle economico del evento seleccionado | Evento seleccionado | Implementado |
+| `ModePanel` | Contenido contextual para Monitorear, Analizar o Planear | Modo actual y evento | Implementado |
+| `DerramaChart` | Comparacion estimada vs real/proyeccion | Evento seleccionado | Implementado |
+| `SectorBreakdown` | Desglose por giro economico | Sectores del evento | Implementado |
+| `NotificationPanel` | Lista de MiPyMEs relacionadas y estado de mensaje | Mocks de MiPyMEs | Implementado |
+| `EventUploader` | Superficie visual de alta por documento | Sin backend todavia | Implementado demo |
+| `AppShell` | Layout principal con navegacion y area de trabajo | Usuario/demo mode, rutas activas | Integrado en `MercuriaDashboard` |
+| `TopBar` | Acciones globales, busqueda y estado demo | Titulo, busqueda, estado demo | Integrado en `MercuriaDashboard` |
+| `MapFilters` | Filtro por tipo de evento | Valor actual y callback | Integrado en `MercuriaDashboard` |
+| `MapModeSelector` | Selector Planear/Analizar/Monitorear | Modo actual y callback | Integrado en `MercuriaDashboard` |
 
 ## Convenciones
 
