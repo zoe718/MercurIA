@@ -1,5 +1,5 @@
-import { MercuriaDashboard } from "@/components/MercuriaDashboard";
+import { LandingPage } from "@/components/LandingPage";
 
 export default function Home() {
-  return <MercuriaDashboard />;
+  return <LandingPage />;
 }

@@ -26,6 +26,16 @@ Este archivo registra decisiones tecnicas y de diseno en formato ADR corto.
 
 **Impacto:** los datos viven temporalmente en `frontend/src/data/demo.ts`; cuando el backend este listo, el frontend debe reemplazar esos mocks por un cliente API alineado con `API_CONTRACT.md`.
 
+**Estado:** reemplazada por la decision "Rediseño a landing y mapa full-screen".
+
+## 2026-06-06 - Rediseño a landing y mapa full-screen
+
+**Decision:** reemplazar la consola principal por landing en `/` y mapa operativo full-screen en `/map` usando Mapbox GL JS.
+
+**Motivo:** la experiencia debe sentirse como producto geoespacial real: entrada clara por landing, mapa ocupando toda la pantalla y opciones flotantes dentro del mapa.
+
+**Impacto:** `frontend/src/data/demo.ts` usa coordenadas `lng/lat`; `frontend/src/lib/mapbox.ts` centraliza centro y limites CDMX; los controles nativos de Mapbox se muestran sobre `/map`. El token se carga desde `NEXT_PUBLIC_MAPBOX_TOKEN` en `.env.local`.
+
 ## 2026-06-06 - Override de PostCSS
 
 **Decision:** agregar `overrides.postcss` en `frontend/package.json`.
@@ -38,6 +48,6 @@ Este archivo registra decisiones tecnicas y de diseno en formato ADR corto.
 
 **Decision:** declarar `viewport` en `frontend/src/app/layout.tsx` y desactivar `devIndicators` en `frontend/next.config.mjs`.
 
-**Motivo:** la consola debe probarse bien en movil y el indicador flotante de Next.js tapaba controles durante la demo local.
+**Motivo:** el frontend debe probarse bien en movil y el indicador flotante de Next.js tapaba controles durante la demo local.
 
 **Impacto:** los breakpoints moviles se aplican correctamente y la vista local en `npm run dev` queda libre de overlays de desarrollo.

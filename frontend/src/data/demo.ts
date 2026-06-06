@@ -20,8 +20,8 @@ export type EconomicEvent = {
   date: string;
   status: EventStatus;
   coordinates: {
-    x: number;
-    y: number;
+    lng: number;
+    lat: number;
   };
   expectedAttendance: number;
   realAttendance?: number;
@@ -43,6 +43,10 @@ export type VenueScore = {
   borough: string;
   score: number;
   estimatedMdp: number;
+  coordinates: {
+    lng: number;
+    lat: number;
+  };
   reason: string;
 };
 
@@ -92,7 +96,7 @@ export const events: EconomicEvent[] = [
     venue: "Autódromo Hermanos Rodríguez",
     date: "Oct 2024",
     status: "finalizado",
-    coordinates: { x: 70, y: 53 },
+    coordinates: { lng: -99.0907, lat: 19.4042 },
     expectedAttendance: 395000,
     realAttendance: 404958,
     estimatedMdp: 7900,
@@ -118,7 +122,7 @@ export const events: EconomicEvent[] = [
     venue: "Zócalo capitalino",
     date: "Sep 2025",
     status: "planificado",
-    coordinates: { x: 49, y: 43 },
+    coordinates: { lng: -99.1332, lat: 19.4326 },
     expectedAttendance: 250000,
     estimatedMdp: 1260,
     directJobs: 1512,
@@ -142,7 +146,7 @@ export const events: EconomicEvent[] = [
     venue: "Foro Sol",
     date: "Oct 2024",
     status: "finalizado",
-    coordinates: { x: 73, y: 57 },
+    coordinates: { lng: -99.0843, lat: 19.3939 },
     expectedAttendance: 260000,
     realAttendance: 274000,
     estimatedMdp: 5100,
@@ -168,7 +172,7 @@ export const events: EconomicEvent[] = [
     venue: "Centro Citibanamex",
     date: "Mar 2025",
     status: "activo",
-    coordinates: { x: 36, y: 34 },
+    coordinates: { lng: -99.2197, lat: 19.4401 },
     expectedAttendance: 40000,
     estimatedMdp: 920,
     directJobs: 1104,
@@ -192,7 +196,7 @@ export const events: EconomicEvent[] = [
     venue: "Ruta Cerro de la Estrella",
     date: "Abr 2025",
     status: "activo",
-    coordinates: { x: 64, y: 73 },
+    coordinates: { lng: -99.0939, lat: 19.344 },
     expectedAttendance: 1800000,
     estimatedMdp: 680,
     directJobs: 816,
@@ -215,6 +219,7 @@ export const venueScores: VenueScore[] = [
     borough: "Cuauhtémoc",
     score: 92,
     estimatedMdp: 1480,
+    coordinates: { lng: -99.1332, lat: 19.4326 },
     reason: "Alta densidad de restaurantes, transporte y comercio local.",
   },
   {
@@ -222,6 +227,7 @@ export const venueScores: VenueScore[] = [
     borough: "Iztacalco",
     score: 88,
     estimatedMdp: 2360,
+    coordinates: { lng: -99.0875, lat: 19.401 },
     reason: "Gran capacidad de recinto y derrama extendida en hotelería.",
   },
   {
@@ -229,6 +235,7 @@ export const venueScores: VenueScore[] = [
     borough: "Miguel Hidalgo",
     score: 84,
     estimatedMdp: 1720,
+    coordinates: { lng: -99.1917, lat: 19.426 },
     reason: "Buena conectividad, oferta hotelera y gasto promedio alto.",
   },
 ];

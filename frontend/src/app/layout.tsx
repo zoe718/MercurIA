@@ -1,10 +1,11 @@
 import type { Metadata, Viewport } from "next";
+import "mapbox-gl/dist/mapbox-gl.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "MercurIA | Consola de derrama económica",
+  title: "MercurIA | Mapa de derrama económica",
   description:
-    "Frontend operativo de MercurIA para monitorear, analizar y planear eventos de alto impacto económico en CDMX.",
+    "Landing y mapa Mapbox de MercurIA para monitorear, analizar y planear eventos de alto impacto económico en CDMX.",
 };
 
 export const viewport: Viewport = {

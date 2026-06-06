@@ -4,28 +4,23 @@ Este registro documenta componentes planeados o creados. Debe actualizarse cuand
 
 ## Estado actual
 
-El frontend esta inicializado en `frontend/` con una consola operativa en `/`. Los componentes viven por ahora en `frontend/src/components/MercuriaDashboard.tsx` y usan datos de `frontend/src/data/demo.ts`.
+El frontend esta inicializado en `frontend/` con landing en `/` y mapa Mapbox full-screen en `/map`. Los componentes usan datos de `frontend/src/data/demo.ts` y configuracion de mapa en `frontend/src/lib/mapbox.ts`.
 
 ## Componentes planeados
 
 | Componente | Responsabilidad | Datos/props esperadas | Estado |
 |---|---|---|---|
-| `MercuriaDashboard` | Consola principal con estado de modo, filtro y evento seleccionado | Datos demo locales | Implementado |
-| `MetricCard` | Tarjetas resumen de derrama, eventos, MiPyMEs y alertas | `label`, `value`, `trend`, `tone` | Implementado |
-| `CDMXMap` | Mapa sintetico con zonas, scores y pines seleccionables | Eventos, modo, evento seleccionado, callback | Implementado |
-| `EventSummary` | Detalle economico del evento seleccionado | Evento seleccionado | Implementado |
-| `ModePanel` | Contenido contextual para Monitorear, Analizar o Planear | Modo actual y evento | Implementado |
-| `DerramaChart` | Comparacion estimada vs real/proyeccion | Evento seleccionado | Implementado |
-| `SectorBreakdown` | Desglose por giro economico | Sectores del evento | Implementado |
-| `NotificationPanel` | Lista de MiPyMEs relacionadas y estado de mensaje | Mocks de MiPyMEs | Implementado |
-| `EventUploader` | Superficie visual de alta por documento | Sin backend todavia | Implementado demo |
-| `AppShell` | Layout principal con navegacion y area de trabajo | Usuario/demo mode, rutas activas | Integrado en `MercuriaDashboard` |
-| `TopBar` | Acciones globales, busqueda y estado demo | Titulo, busqueda, estado demo | Integrado en `MercuriaDashboard` |
-| `MapFilters` | Filtro por tipo de evento | Valor actual y callback | Integrado en `MercuriaDashboard` |
-| `MapModeSelector` | Selector Planear/Analizar/Monitorear | Modo actual y callback | Integrado en `MercuriaDashboard` |
+| `LandingPage` | Landing con CTA al mapa e indicadores compactos | Eventos y metricas demo | Implementado |
+| `LandingPreviewMap` | Mapa Mapbox no interactivo como escena visual de `/` | Token Mapbox, eventos demo | Implementado |
+| `FullScreenMap` | Experiencia Mapbox full-screen con modos, filtros, marcadores y panel flotante | Eventos, scores y MiPyMEs demo | Implementado |
+| `EventSheet` | Panel flotante del evento seleccionado | Evento seleccionado y modo actual | Implementado |
+| `PlanningBlock` | Scores de zonas para modo Planear | `venueScores` | Implementado |
+| `AnalysisBlock` | Narrativa y sectores para modo Analizar | Evento seleccionado | Implementado |
+| `MonitoringBlock` | MiPyMEs listas para modo Monitorear | `pymeMatches` | Implementado |
 
 ## Convenciones
 
 - Los componentes deben usar tokens de color de [../FRONTEND_THEME.md](../FRONTEND_THEME.md).
 - Los componentes de datos deben exponer estados `loading`, `empty`, `error` y `demo`.
 - Los componentes reutilizables deben documentarse aqui antes de crecer en complejidad.
+- Los controles principales del mapa deben vivir sobre el mapa, no en una pantalla de dashboard separada.

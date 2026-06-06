@@ -4,18 +4,19 @@ Este documento registra lo que el frontend necesita del backend. Es una guia de 
 
 ## Estado actual
 
-- Frontend: inicializado en `frontend/` con Next.js y datos demo locales.
+- Frontend: inicializado en `frontend/` con Next.js, landing en `/`, mapa Mapbox full-screen en `/map` y datos demo locales.
 - Backend: pendiente de inicializar.
 - Fuente base: [../IDEA.md](../IDEA.md).
 - Tema visual: [../FRONTEND_THEME.md](../FRONTEND_THEME.md).
 - Mock actual: `frontend/src/data/demo.ts`.
+- Mapbox: token público local en `frontend/.env.local`; plantilla sin token real en `frontend/.env.example`.
 
 ## Pantallas y datos esperados
 
 | Pantalla | Datos requeridos | Endpoint esperado | Estado |
 |---|---|---|---|
-| Consola `/` | Metricas resumen, eventos destacados, alertas | `GET /api/events/current`, `GET /api/analysis/summary` | Mock local |
-| Mapa CDMX | Eventos GeoJSON, capas, heatmap, Voronoi | `GET /api/events/geojson`, `GET /api/map/layers`, `GET /api/map/heatmap`, `GET /api/map/voronoi` | Mock local |
+| Landing `/` | Metricas resumen, evento destacado y marcadores de referencia | `GET /api/events/current`, `GET /api/analysis/summary` | Mock local |
+| Mapa `/map` | Eventos con `lng/lat`, capas, heatmap, Voronoi, scores de sede | `GET /api/events/geojson`, `GET /api/map/layers`, `GET /api/map/heatmap`, `GET /api/map/voronoi` | Mock local |
 | Analisis de evento | Detalle, antes/despues, sectores, empleo, narrativa IA | `GET /api/events/{id}`, `GET /api/analysis/{event_id}` | Mock local |
 | Alta por documento | Resultado de extraccion y vista previa | `POST /api/events/upload` | Pendiente |
 | Notificaciones | MiPyMEs elegibles, borrador IA, historial | `GET /api/notifications/pymes`, `POST /api/notifications/draft`, `GET /api/notifications/log` | Mock local |
@@ -34,9 +35,9 @@ Mientras el backend no exista, el frontend usa datos sinteticos locales basados 
 
 El mock actual incluye:
 
-- `metrics`: tarjetas resumen para la consola.
-- `events`: eventos con ubicacion porcentual para el mapa sintetico, derrama, afluencia, empleo, negocios beneficiados, sectores e insight IA simulado.
-- `venueScores`: zonas sugeridas para modo Planear.
+- `metrics`: indicadores resumen para la landing.
+- `events`: eventos con coordenadas `lng/lat` para Mapbox, derrama, afluencia, empleo, negocios beneficiados, sectores e insight IA simulado.
+- `venueScores`: zonas sugeridas para modo Planear con coordenadas `lng/lat`.
 - `pymeMatches`: MiPyMEs elegibles para el panel de notificaciones.
 
 ## Cambios pendientes

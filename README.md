@@ -10,7 +10,7 @@ MercurIA es una plataforma de inteligencia económica para analizar, planear y m
 
 ## Frontend
 
-La primera versión del frontend vive en `frontend/` y usa datos sintéticos locales mientras el backend se construye en paralelo.
+El frontend vive en `frontend/`. La ruta `/` muestra la landing page y `/map` abre el mapa Mapbox a pantalla completa con datos sintéticos locales mientras el backend se construye en paralelo.
 
 ```bash
 cd frontend
@@ -18,4 +18,4 @@ npm install
 npm run dev
 ```
 
-La app queda disponible en `http://localhost:3000`.
+La app queda disponible en `http://localhost:3000`. El token público de Mapbox debe vivir en `frontend/.env.local`; `frontend/.env.example` deja la plantilla sin exponer tokens en Git.
