@@ -6,3 +6,4 @@ MercurIA es una plataforma de inteligencia económica para analizar, planear y m
 
 - [Documento maestro de arquitectura](docs/IDEA.md)
 - [Paleta y tema frontend](docs/FRONTEND_THEME.md)
+- [Documentación viva del frontend](docs/frontend/README.md)
