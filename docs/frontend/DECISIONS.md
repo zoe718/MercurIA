@@ -67,3 +67,27 @@ Este archivo registra decisiones tecnicas y de diseno en formato ADR corto.
 **Motivo:** el frontend debe probarse bien en movil y el indicador flotante de Next.js tapaba controles durante la demo local.
 
 **Impacto:** los breakpoints moviles se aplican correctamente y la vista local en `npm run dev` queda libre de overlays de desarrollo.
+
+## 2026-06-06 - Eventos como edificios 3D resaltados
+
+**Decision:** reemplazar los marcadores circulares de eventos en `/map` por una capa `fill-extrusion` que reutiliza geometrías de edificios de Mapbox cercanas a cada coordenada de evento.
+
+**Motivo:** la señal visual del evento debe sentirse integrada al mapa urbano: el edificio o recinto se eleva y colorea sin perder la forma que Mapbox le asigna.
+
+**Impacto:** `FullScreenMap` agrega una capa base de edificios 3D y una fuente local `event-building-highlights` construida con `queryRenderedFeatures` sobre la capa `building`. El backend no necesita entregar huellas de edificios por ahora, pero si más adelante lo hace debe respetar geometrías reales de recinto/edificio.
+
+## 2026-06-06 - Panel por modo operativo
+
+**Decision:** separar el contenido del panel derecho por modo: `Analizar` muestra derrama del evento seleccionado, `Monitorear` muestra ranking territorial y `Planear` muestra formulario de simulación/carga.
+
+**Motivo:** cada modo tiene una tarea distinta y el panel anterior mezclaba evento, ranking y notificaciones sin jerarquía clara.
+
+**Impacto:** el frontend sigue usando los mismos mocks actuales; no se agregan datos sintéticos nuevos. El ranking se deriva de las celdas Voronoi existentes y el color en `Monitorear` se basa en `estimatedMdp` del giro seleccionado.
+
+## 2026-06-06 - Creación simulada de eventos
+
+**Decision:** permitir que el formulario de `Planear` cree eventos simulados en estado local del frontend.
+
+**Motivo:** la demo debe mostrar que capturar un evento cambia inmediatamente la derrama económica del diagnóstico y el análisis, aunque el backend todavía no exista.
+
+**Impacto:** los eventos creados se agregan al carril inferior, se reflejan en edificios 3D resaltados, se seleccionan automáticamente y actualizan el diagnóstico agregado de `Analizar`. La simulación calcula derrama, empleos, MiPyMEs y sectores desde presupuesto, afluencia, giro y score Voronoi.

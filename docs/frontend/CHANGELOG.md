@@ -4,6 +4,15 @@ Bitacora cronologica de cambios relacionados con frontend.
 
 ## 2026-06-06
 
+- Se agrega una capa de símbolos por tipo de evento sobre los edificios/recintos resaltados para ubicar eventos desde lejos.
+- Se habilita la creación local de eventos simulados desde `Planear`.
+- Los eventos simulados actualizan carril inferior, edificios 3D, diagnóstico agregado y análisis de derrama sin backend.
+- Se calcula derrama, empleos, MiPyMEs y sectores simulados desde presupuesto, afluencia, giro y score Voronoi.
+- Se escala altura y contorno de edificios 3D resaltados para que sean visibles desde zoom lejano sin perder la geometría de Mapbox.
+- Se reestructura el panel derecho por modo: `Analizar` muestra derrama del evento, `Monitorear` muestra ranking de 15 lugares y `Planear` muestra formulario de simulación/carga.
+- Se pinta el Voronoi en `Monitorear` por derrama estimada (`estimatedMdp`) del giro seleccionado.
+- Se reemplazan los marcadores circulares de eventos en `/map` por edificios 3D resaltados desde geometrías de Mapbox.
+- Se agrega una capa base de edificios 3D y una fuente local `event-building-highlights` para elevar/colorizar recintos cercanos a cada evento.
 - Se reemplaza el polígono aproximado por el límite oficial CDMX en `frontend/src/data/cdmx-boundary.json`.
 - Se recortan las celdas Voronoi estrictamente contra la frontera oficial para que el diagrama no salga de CDMX.
 - Se actualiza el lenguaje del mapa a zonas candidatas y score de idoneidad por tipo de evento.
