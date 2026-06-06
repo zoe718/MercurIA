@@ -1,12 +1,45 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { ArrowRight, Building2, MapPinned, RadioTower, Sparkles } from "lucide-react";
 import { LandingPreviewMap } from "@/components/LandingPreviewMap";
 import { events, metrics } from "@/data/demo";
+import { fetchAnalysisSummary, fetchEvents, type SummaryMetric } from "@/lib/api";
 
 export function LandingPage() {
-  const featuredEvent = events[0];
+  const [featuredEvent, setFeaturedEvent] = useState(events[0]);
+  const [heroMetric, setHeroMetric] = useState<SummaryMetric>(metrics[0]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadBackendSignals() {
+      const [backendEvents, summary] = await Promise.all([fetchEvents(), fetchAnalysisSummary()]);
+
+      if (cancelled) {
+        return;
+      }
+
+      const topEvent = backendEvents
+        ?.filter((event) => event.status === "activo" || event.status === "planificado")
+        .sort((a, b) => (b.realMdp ?? b.estimatedMdp) - (a.realMdp ?? a.estimatedMdp))[0];
+
+      if (topEvent) {
+        setFeaturedEvent(topEvent);
+      }
+
+      if (summary?.metrics[0]) {
+        setHeroMetric(summary.metrics[0]);
+      }
+    }
+
+    loadBackendSignals();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <main className="landing">
@@ -57,8 +90,8 @@ export function LandingPage() {
         </article>
         <article>
           <Sparkles size={18} aria-hidden="true" />
-          <span>{metrics[0].label}</span>
-          <strong>{metrics[0].value}</strong>
+          <span>{heroMetric.label}</span>
+          <strong>{heroMetric.value}</strong>
         </article>
       </section>
     </main>

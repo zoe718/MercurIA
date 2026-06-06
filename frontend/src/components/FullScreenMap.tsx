@@ -17,7 +17,7 @@ import {
   Target,
   Users,
 } from "lucide-react";
-import { EconomicEvent, EventMode, events, pymeMatches } from "@/data/demo";
+import { EconomicEvent, EventMode, events as fallbackEvents, pymeMatches } from "@/data/demo";
 import {
   VORONOI_SEED_COUNT,
   buildVoronoiGeoJson,
@@ -28,6 +28,7 @@ import {
   type VoronoiEventType,
 } from "@/data/voronoi";
 import { CDMX_BOUNDS, CDMX_CENTER, MAPBOX_TOKEN } from "@/lib/mapbox";
+import { fetchEvents } from "@/lib/api";
 
 const VORONOI_CELL_SOURCE = "voronoi-cells";
 const VORONOI_POINT_SOURCE = "voronoi-seeds";
@@ -57,10 +58,11 @@ export function FullScreenMap() {
   const [mapReady, setMapReady] = useState(false);
   const [mode, setMode] = useState<EventMode>("planear");
   const [voronoiType, setVoronoiType] = useState<VoronoiEventType>("festivales");
-  const [selectedEventId, setSelectedEventId] = useState(events[0].id);
+  const [displayEvents, setDisplayEvents] = useState<EconomicEvent[]>(fallbackEvents);
+  const [selectedEventId, setSelectedEventId] = useState(fallbackEvents[0].id);
   const [selectedCellId, setSelectedCellId] = useState<string | null>(null);
 
-  const selectedEvent = events.find((event) => event.id === selectedEventId) ?? events[0];
+  const selectedEvent = displayEvents.find((event) => event.id === selectedEventId) ?? displayEvents[0];
   const voronoiCells = useMemo(() => buildVoronoiGeoJson(voronoiType), [voronoiType]);
   const voronoiPoints = useMemo(() => buildVoronoiPointGeoJson(voronoiType), [voronoiType]);
   const topCells = useMemo(
@@ -79,6 +81,30 @@ export function FullScreenMap() {
   useEffect(() => {
     setSelectedCellId(topCells[0]?.properties.id ?? null);
   }, [topCells, voronoiType]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadEvents() {
+      const backendEvents = await fetchEvents();
+
+      if (!cancelled && backendEvents?.length) {
+        setDisplayEvents(backendEvents);
+      }
+    }
+
+    loadEvents();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!displayEvents.some((event) => event.id === selectedEventId)) {
+      setSelectedEventId(displayEvents[0].id);
+    }
+  }, [displayEvents, selectedEventId]);
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) {
@@ -243,7 +269,7 @@ export function FullScreenMap() {
       markerRefs.current.forEach((marker) => marker.remove());
       markerRefs.current = [];
 
-      events.forEach((event) => {
+      displayEvents.forEach((event) => {
         const markerNode = document.createElement("button");
         markerNode.className = `event-marker ${event.type} ${event.status} ${
           event.id === selectedEvent.id ? "selected" : ""
@@ -276,7 +302,7 @@ export function FullScreenMap() {
     return () => {
       cancelled = true;
     };
-  }, [selectedEvent.id]);
+  }, [displayEvents, selectedEvent.id]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -379,7 +405,7 @@ export function FullScreenMap() {
       />
 
       <section className="map-event-rail" aria-label="Eventos en el mapa">
-        {events.map((event) => (
+        {displayEvents.map((event) => (
           <button
             className={event.id === selectedEvent.id ? "active" : ""}
             key={event.id}

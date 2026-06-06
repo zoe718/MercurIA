@@ -9,7 +9,7 @@ from app.models.schemas import (
     SummaryMetric,
 )
 from app.services.anthropic_service import AnthropicService
-from app.services.data_store import find_event, get_events, get_pymes
+from app.services.data_store import find_event, get_baselines, get_events
 from app.services.economic_model import confidence_interval, forecast_for_event, simulate_event
 
 router = APIRouter(prefix="/analysis", tags=["analysis"])
@@ -18,9 +18,11 @@ router = APIRouter(prefix="/analysis", tags=["analysis"])
 @router.get("/summary", response_model=AnalysisSummary)
 def summary() -> AnalysisSummary:
     events = get_events()
+    baselines = get_baselines()
+    dashboard = baselines.get("dashboard", {})
     total_estimated = round(sum(event.realMdp or event.estimatedMdp for event in events), 2)
     active_events = sum(1 for event in events if event.status == "activo")
-    reachable_pymes = len(get_pymes())
+    reachable_pymes = int(dashboard.get("reachablePymesEstimate", 0))
     borough_totals: dict[str, float] = {}
     for event in events:
         borough_totals[event.borough] = borough_totals.get(event.borough, 0) + (
@@ -38,7 +40,12 @@ def summary() -> AnalysisSummary:
                 tone="success",
             ),
             SummaryMetric(label="Eventos monitoreados", value=str(len(events)), trend=f"{active_events} activos", tone="accent"),
-            SummaryMetric(label="MiPyMEs alcanzables", value=f"{reachable_pymes:,}", trend="demo sintetico", tone="secondary"),
+            SummaryMetric(
+                label="MiPyMEs alcanzables",
+                value=f"{reachable_pymes:,}",
+                trend=f"{dashboard.get('coveredBoroughs', 16)} alcaldias",
+                tone="secondary",
+            ),
             SummaryMetric(label="Alcaldias con mayor actividad", value=str(len(top_boroughs)), trend=", ".join(top_boroughs[:2]), tone="warning"),
         ],
         totalEstimatedMdp=total_estimated,

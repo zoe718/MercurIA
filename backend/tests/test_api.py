@@ -108,6 +108,24 @@ def test_voronoi_endpoint_matches_frontend_contract():
     assert feature["properties"]["eventType"] == "festivales"
 
 
+def test_summary_uses_reachable_pyme_universe():
+    response = client.get("/api/analysis/summary")
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["reachablePymes"] == 12460
+    assert payload["activeEvents"] == 3
+    assert payload["metrics"][2]["value"] == "12,460"
+
+
+def test_heatmap_supports_hotel_occupancy_metric():
+    response = client.get("/api/map/heatmap", params={"metric": "ocupacion"})
+    assert response.status_code == 200
+    points = response.json()
+    assert points
+    assert all(point["metric"] == "ocupacion" for point in points)
+    assert all(0 < point["weight"] <= 1 for point in points)
+
+
 def test_simulate_returns_confidence_bands():
     response = client.post(
         "/api/analysis/simulate",

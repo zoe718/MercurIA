@@ -6,7 +6,9 @@ export type EventType =
   | "musical"
   | "ferial"
   | "gastronomico"
-  | "religioso";
+  | "religioso"
+  | "civico"
+  | "tecnologico";
 
 export type EventStatus = "activo" | "planificado" | "finalizado";
 
@@ -61,15 +63,15 @@ export type PymeMatch = {
 
 export const metrics = [
   {
-    label: "Derrama estimada 2026",
-    value: "$15,840 mdp",
+    label: "Derrama histórica y proyectada",
+    value: "$56,595 mdp",
     trend: "+18.4%",
     tone: "success",
   },
   {
     label: "Eventos monitoreados",
-    value: "24",
-    trend: "8 activos",
+    value: "20",
+    trend: "3 activos",
     tone: "accent",
   },
   {
@@ -80,8 +82,8 @@ export const metrics = [
   },
   {
     label: "Alertas de oportunidad",
-    value: "7",
-    trend: "2 críticas",
+    value: "9",
+    trend: "3 prioritarias",
     tone: "warning",
   },
 ] as const;

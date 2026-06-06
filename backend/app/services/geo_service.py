@@ -1,5 +1,5 @@
 from app.models.schemas import GeoJsonFeature, GeoJsonFeatureCollection, HeatmapPoint, MapLayer
-from app.services.data_store import get_events
+from app.services.data_store import get_baselines, get_events
 
 
 def events_geojson() -> GeoJsonFeatureCollection:
@@ -28,17 +28,23 @@ def events_geojson() -> GeoJsonFeatureCollection:
 
 def heatmap(metric: str = "derrama") -> list[HeatmapPoint]:
     points = []
+    hotel_occupancy = get_baselines().get("hotelOccupancy", {})
     for event in get_events():
-        value = {
-            "derrama": event.realMdp or event.estimatedMdp,
-            "empleo": event.directJobs + event.indirectJobs,
-            "negocios": event.benefitedBusinesses,
-        }.get(metric, event.realMdp or event.estimatedMdp)
+        if metric == "ocupacion":
+            value = float(hotel_occupancy.get(event.borough, 0.45)) * 100
+            weight = round(value / 100, 4)
+        else:
+            value = {
+                "derrama": event.realMdp or event.estimatedMdp,
+                "empleo": event.directJobs + event.indirectJobs,
+                "negocios": event.benefitedBusinesses,
+            }.get(metric, event.realMdp or event.estimatedMdp)
+            weight = round(float(value) / 1000, 4)
         points.append(
             HeatmapPoint(
                 id=event.id,
                 coordinates=event.coordinates,
-                weight=round(float(value) / 1000, 4),
+                weight=weight,
                 metric=metric,
                 value=float(value),
                 borough=event.borough,
@@ -72,5 +78,13 @@ def layers() -> list[MapLayer]:
             endpoint="/api/map/venue-score",
             defaultVisible=False,
             description="Zonas recomendadas para planear eventos futuros.",
+        ),
+        MapLayer(
+            id="hotel-occupancy-heatmap",
+            label="Heatmap de ocupacion hotelera",
+            type="heatmap",
+            endpoint="/api/map/heatmap?metric=ocupacion",
+            defaultVisible=False,
+            description="Intensidad sintetica de ocupacion hotelera por alcaldia para calibrar eventos turisticos.",
         ),
     ]

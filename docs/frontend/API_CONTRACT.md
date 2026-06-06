@@ -4,7 +4,7 @@ Este documento registra lo que el frontend necesita del backend. Es una guia de 
 
 ## Estado actual
 
-- Frontend: inicializado en `frontend/` con Next.js, landing en `/`, mapa Mapbox full-screen en `/map`, capa Voronoi local y datos demo locales.
+- Frontend: inicializado en `frontend/` con Next.js, landing en `/`, mapa Mapbox full-screen en `/map`, capa Voronoi local y datos demo locales como fallback. Landing y mapa ya consumen backend cuando `NEXT_PUBLIC_API_URL` esta disponible.
 - Backend: inicializado en `backend/` con FastAPI, datos sinteticos JSON, OpenAPI y contrato publico camelCase.
 - Fuente base: [../IDEA.md](../IDEA.md).
 - Tema visual: [../FRONTEND_THEME.md](../FRONTEND_THEME.md).
@@ -32,7 +32,7 @@ Los endpoints con IA (`GET /api/analysis/{eventId}` y `POST /api/notifications/d
 | Pantalla | Datos requeridos | Endpoint esperado | Estado |
 |---|---|---|---|
 | Landing `/` | Metricas resumen, evento destacado y marcadores de referencia | `GET /api/events/current`, `GET /api/analysis/summary` | Backend listo |
-| Mapa `/map` | Eventos con `lng/lat`, capas, heatmap, scores de sede, Voronoi por tipo de evento | `GET /api/events/geojson`, `GET /api/map/layers`, `GET /api/map/heatmap`, `GET /api/map/venue-score`, `GET /api/map/voronoi?event_type={type}` | Backend listo; frontend aun usa mock local para Voronoi |
+| Mapa `/map` | Eventos con `lng/lat`, capas, heatmap, scores de sede, Voronoi por tipo de evento | `GET /api/events`, `GET /api/events/geojson`, `GET /api/map/layers`, `GET /api/map/heatmap`, `GET /api/map/venue-score`, `GET /api/map/voronoi?event_type={type}` | Backend listo; eventos conectados con fallback local; frontend aun usa mock local para Voronoi |
 | Analisis de evento | Detalle, antes/despues, sectores, empleo, narrativa IA | `GET /api/events/{eventId}`, `GET /api/analysis/{eventId}` | Backend listo; requiere Anthropic para narrativa |
 | Alta por documento | Resultado de extraccion y vista previa | `POST /api/events/upload` | Pendiente |
 | Notificaciones | MiPyMEs elegibles, borrador IA, historial | `GET /api/notifications/pymes`, `POST /api/notifications/draft`, `GET /api/notifications/log` | Backend listo; draft requiere Anthropic |
@@ -96,6 +96,17 @@ FeatureCollection<Polygon | MultiPolygon, {
 
 El frontend actual genera celdas reales con Turf y las recorta al limite oficial CDMX. El backend ya expone un endpoint sintetico compatible con el mismo shape; antes de reemplazar la simulacion local por backend, validar visualmente que la geometria cumpla el nivel de precision esperado.
 
+## Heatmap
+
+`GET /api/map/heatmap?metric={metric}` acepta:
+
+- `derrama`: valor en mdp reales o estimados.
+- `empleo`: empleos directos + indirectos.
+- `negocios`: negocios beneficiados.
+- `ocupacion`: porcentaje sintetico de ocupacion hotelera por alcaldia, calibrado para demo con referencia metodologica DATATUR.
+
+Cada punto devuelve `coordinates`, `weight`, `metric`, `value` y `borough`.
+
 ## Endpoints implementados
 
 - `GET /api/health`
@@ -108,7 +119,7 @@ El frontend actual genera celdas reales con Turf y las recorta al limite oficial
 - `POST /api/analysis/simulate`
 - `GET /api/map/venue-score`
 - `GET /api/map/voronoi`
-- `GET /api/map/heatmap`
+- `GET /api/map/heatmap` con metricas `derrama`, `empleo`, `negocios`, `ocupacion`
 - `GET /api/map/layers`
 - `GET /api/notifications/pymes`
 - `POST /api/notifications/draft`
@@ -116,7 +127,7 @@ El frontend actual genera celdas reales con Turf y las recorta al limite oficial
 
 ## Mocks temporales
 
-Mientras el frontend termina de conectarse al backend, mantiene mocks basados en `docs/IDEA.md`.
+Mientras el frontend termina de conectarse por completo al backend, mantiene mocks basados en `docs/IDEA.md`.
 
 - `metrics`: indicadores resumen para la landing.
 - `events`: eventos con coordenadas `lng/lat` para Mapbox, derrama, afluencia, empleo, negocios beneficiados, sectores e insight IA simulado.
@@ -135,6 +146,6 @@ Mientras el frontend termina de conectarse al backend, mantiene mocks basados en
 
 ## Cambios pendientes
 
-- Conectar el frontend al backend reemplazando los mocks locales de `frontend/src/data/demo.ts`.
+- Completar conexion de paneles secundarios al backend y conservar `frontend/src/data/demo.ts` solo como fallback offline.
 - Evaluar si `frontend/src/data/voronoi.ts` debe seguir generando geometria real con Turf o consumir `GET /api/map/voronoi?event_type={type}`.
 - Implementar `POST /api/events/upload` para alta por documento.

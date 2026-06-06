@@ -21,9 +21,41 @@
     "Cuauhtemoc": 0.78,
     "Miguel Hidalgo": 0.82,
     "Benito Juarez": 0.68,
+    "Alvaro Obregon": 0.61,
+    "Coyoacan": 0.57,
     "Iztacalco": 0.58,
+    "Tlalpan": 0.51,
+    "Xochimilco": 0.46,
     "Iztapalapa": 0.42,
-    "Xochimilco": 0.46
+    "Gustavo A. Madero": 0.44,
+    "Azcapotzalco": 0.49,
+    "Venustiano Carranza": 0.55,
+    "Tlahuac": 0.36,
+    "Magdalena Contreras": 0.39,
+    "Cuajimalpa": 0.63,
+    "Milpa Alta": 0.31
   },
-  "source": "synthetic-demo"
+  "sectorBaselines": {
+    "Hoteleria": { "averageTicketMxn": 1850, "denueActivity": "7211", "eventSensitivity": 0.82 },
+    "Restaurantes": { "averageTicketMxn": 420, "denueActivity": "7221", "eventSensitivity": 0.9 },
+    "Transporte": { "averageTicketMxn": 180, "denueActivity": "4853", "eventSensitivity": 0.74 },
+    "Retail": { "averageTicketMxn": 560, "denueActivity": "4711", "eventSensitivity": 0.68 },
+    "Comercio local": { "averageTicketMxn": 260, "denueActivity": "4611", "eventSensitivity": 0.78 },
+    "Alimentos": { "averageTicketMxn": 160, "denueActivity": "7223", "eventSensitivity": 0.86 },
+    "Turismo": { "averageTicketMxn": 950, "denueActivity": "5615", "eventSensitivity": 0.72 },
+    "Servicios": { "averageTicketMxn": 1100, "denueActivity": "5619", "eventSensitivity": 0.58 },
+    "Entretenimiento": { "averageTicketMxn": 680, "denueActivity": "7111", "eventSensitivity": 0.64 }
+  },
+  "dashboard": {
+    "reachablePymesEstimate": 12460,
+    "opportunityAlerts": 9,
+    "criticalAlerts": 3,
+    "coveredBoroughs": 16
+  },
+  "source": "synthetic-demo-calibrated",
+  "sourceNotes": [
+    "Estructura alineada a Cartelera CDMX para eventos.",
+    "Ocupacion hotelera sintetica calibrada con el tipo de indicador publicado por DATATUR.",
+    "Actividades economicas mapeadas a familias DENUE para migracion posterior a INEGI."
+  ]
 }
