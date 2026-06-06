@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { EconomicEvent, EventMode, events, pymeMatches } from "@/data/demo";
 import {
+  VORONOI_SEED_COUNT,
   buildVoronoiGeoJson,
   buildVoronoiPointGeoJson,
   cdmxBoundary,
@@ -327,7 +328,7 @@ export function FullScreenMap() {
           <ArrowLeft size={17} aria-hidden="true" />
           MercurIA
         </Link>
-        <span className="map-live">CDMX · Voronoi demo · 18 semillas</span>
+        <span className="map-live">CDMX · límite oficial · {VORONOI_SEED_COUNT} semillas</span>
       </header>
 
       <section className="map-tools" aria-label="Controles de análisis del mapa">
@@ -483,8 +484,8 @@ function VoronoiBlock({
       <div className="voronoi-block-heading">
         <MapPinned size={17} aria-hidden="true" />
         <div>
-          <h2>Celda Voronoi seleccionada</h2>
-          <span>{profile.label} · rank #{cell.rank}</span>
+          <h2>Zona candidata Voronoi</h2>
+          <span>{profile.label} · idoneidad #{cell.rank}</span>
         </div>
         <b>{cell.score}</b>
       </div>
@@ -503,7 +504,7 @@ function VoronoiBlock({
 function PlanningBlock({ cells }: { cells: VoronoiCellProperties[] }) {
   return (
     <section className="sheet-block">
-      <h2>Top zonas para este tipo</h2>
+      <h2>Mejores zonas para colocar este evento</h2>
       {cells.slice(0, 4).map((cell) => (
         <article className="compact-row" key={cell.id}>
           <LocateFixed size={16} aria-hidden="true" />
@@ -567,9 +568,9 @@ function VoronoiLegend({
         <span style={{ backgroundColor: profileColor }} />
         <strong>{profileLabel}</strong>
       </div>
-      <p>Score bajo</p>
+      <p>Menor idoneidad</p>
       <i />
-      <p>Score alto</p>
+      <p>Mayor idoneidad</p>
     </section>
   );
 }

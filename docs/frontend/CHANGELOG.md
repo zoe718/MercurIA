@@ -4,7 +4,10 @@ Bitacora cronologica de cambios relacionados con frontend.
 
 ## 2026-06-06
 
-- Se agrega capa Voronoi sobre Mapbox, recortada a un polígono aproximado de CDMX.
+- Se reemplaza el polígono aproximado por el límite oficial CDMX en `frontend/src/data/cdmx-boundary.json`.
+- Se recortan las celdas Voronoi estrictamente contra la frontera oficial para que el diagrama no salga de CDMX.
+- Se actualiza el lenguaje del mapa a zonas candidatas y score de idoneidad por tipo de evento.
+- Se agrega capa Voronoi sobre Mapbox, recortada a CDMX.
 - Se simulan 18 sitios-semilla y scores por tipo de evento.
 - Se agrega selector `Tipo de evento para Voronoi` con perfiles `fiestas`, `festivales`, `deportivos`, `culturales`, `turisticos`, `religioso` y `gastronomico`.
 - Se agrega panel de celda con score, ranking, fórmula y variables principales.

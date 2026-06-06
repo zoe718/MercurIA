@@ -16,7 +16,7 @@ Este documento registra lo que el frontend necesita del backend. Es una guia de 
 | Pantalla | Datos requeridos | Endpoint esperado | Estado |
 |---|---|---|---|
 | Landing `/` | Metricas resumen, evento destacado y marcadores de referencia | `GET /api/events/current`, `GET /api/analysis/summary` | Mock local |
-| Mapa `/map` | Eventos con `lng/lat`, Voronoi por tipo de evento, scores de celda | `GET /api/events/geojson`, `GET /api/map/voronoi?event_type={type}`, `GET /api/map/layers` | Mock local |
+| Mapa `/map` | Eventos con `lng/lat`, Voronoi por tipo de evento, scores de idoneidad y celdas recortadas al límite oficial CDMX | `GET /api/events/geojson`, `GET /api/map/voronoi?event_type={type}`, `GET /api/map/layers` | Mock local |
 | Analisis de evento | Detalle, antes/despues, sectores, empleo, narrativa IA | `GET /api/events/{id}`, `GET /api/analysis/{event_id}` | Mock local |
 | Alta por documento | Resultado de extraccion y vista previa | `POST /api/events/upload` | Pendiente |
 | Notificaciones | MiPyMEs elegibles, borrador IA, historial | `GET /api/notifications/pymes`, `POST /api/notifications/draft`, `GET /api/notifications/log` | Mock local |
@@ -39,11 +39,12 @@ El mock actual incluye:
 - `events`: eventos con coordenadas `lng/lat` para Mapbox, derrama, afluencia, empleo, negocios beneficiados, sectores e insight IA simulado.
 - `venueScores`: zonas sugeridas para modo Planear con coordenadas `lng/lat`.
 - `pymeMatches`: MiPyMEs elegibles para el panel de notificaciones.
-- `voronoiSeedSites`: 18 sitios-semilla simulados para generar celdas Voronoi.
+- `cdmxBoundary`: límite oficial CDMX en `frontend/src/data/cdmx-boundary.json`, obtenido desde la capa pública `Límite de la Ciudad de México`.
+- `voronoiSeedSites`: 18 sitios-semilla simulados para generar celdas Voronoi dentro de CDMX.
 - `voronoiEventProfiles`: fórmulas y variables por tipo de evento.
 
 ## Cambios pendientes
 
 - Definir payload final de `GET /api/analysis/{event_id}`.
-- Reemplazar `frontend/src/data/voronoi.ts` por `GET /api/map/voronoi?event_type={type}` cuando backend exista.
+- Reemplazar `frontend/src/data/voronoi.ts` por `GET /api/map/voronoi?event_type={type}` cuando backend exista; el endpoint debe responder `Polygon | MultiPolygon` ya recortado al límite oficial CDMX.
 - Definir shape de respuesta para notificaciones y borradores generados por IA.

@@ -1,14 +1,22 @@
 # Voronoi Map Contract
 
-Este documento describe la capa Voronoi del mapa de MercurIA. El objetivo es que el frontend y backend compartan la misma idea de datos: sitios-semilla dentro de CDMX, variables por tipo de evento, score económico y celdas recortadas al polígono de la ciudad.
+Este documento describe la capa Voronoi del mapa de MercurIA. El objetivo es que el frontend y backend compartan la misma idea de datos: sitios-semilla dentro de CDMX, variables por tipo de evento, score de idoneidad económica y celdas estrictamente recortadas al polígono oficial de la ciudad.
 
 ## Comportamiento actual
 
 - La ruta `/map` muestra un diagrama de Voronoi sobre Mapbox.
-- El diagrama está recortado a un polígono aproximado de Ciudad de México.
-- El selector `Tipo de evento para Voronoi` recalcula score, color, variables y ranking.
+- El diagrama está recortado al límite oficial de Ciudad de México y no debe renderizar geometría fuera de esa frontera.
+- El selector `Tipo de evento para Voronoi` recalcula idoneidad, color, variables y ranking.
 - Hay 18 sitios-semilla simulados distribuidos en CDMX.
-- Al hacer clic en una celda, el panel muestra nombre, alcaldía, score, fórmula y variables principales.
+- Al hacer clic en una zona candidata, el panel muestra nombre, alcaldía, score de idoneidad, fórmula y variables principales.
+
+## Límite CDMX
+
+- Fuente: capa pública `Límite de la Ciudad de México` del servicio ArcGIS `AtlasCapasPublicas/Limites`: https://serviciosatlas.sgirpc.cdmx.gob.mx/arcgis/rest/services/AtlasCapasPublicas/Limites/FeatureServer/6
+- Archivo versionado: `frontend/src/data/cdmx-boundary.json`.
+- Formato: `FeatureCollection` GeoJSON con un `Polygon` de Ciudad de México en `EPSG:4326`.
+- Regla de render: cada celda Voronoi se intersecta con `cdmxBoundary`; si una celda no intersecta el polígono oficial, se descarta.
+- Regla para backend: el endpoint real debe devolver geometrías ya recortadas a esta frontera. El frontend no debe recibir celdas que salgan de CDMX.
 
 ## Tipos soportados
 
@@ -28,9 +36,10 @@ La implementación actual vive en `frontend/src/data/voronoi.ts`.
 
 - `voronoiSeedSites`: 18 sitios-semilla simulados.
 - `voronoiEventProfiles`: configuración por tipo de evento.
-- `buildVoronoiGeoJson(type)`: devuelve celdas Voronoi recortadas a CDMX.
+- `cdmxBoundary`: límite oficial de CDMX importado desde `frontend/src/data/cdmx-boundary.json`.
+- `buildVoronoiGeoJson(type)`: devuelve celdas Voronoi recortadas al límite oficial de CDMX.
 - `buildVoronoiPointGeoJson(type)`: devuelve puntos-semilla con score y ranking.
-- `cdmxBoundary`: polígono aproximado de CDMX para recorte visual.
+- `VORONOI_SEED_COUNT`: contador de semillas mostrado en la UI.
 
 ## Contrato esperado del backend
 
@@ -43,12 +52,12 @@ GET /api/map/voronoi?event_type=festivales
 Respuesta esperada:
 
 ```ts
-FeatureCollection<Polygon, {
+FeatureCollection<Polygon | MultiPolygon, {
   id: string;
   name: string;
   borough: string;
   eventType: string;
-  score: number;
+  score: number; // 0-100, idoneidad relativa para el tipo de evento
   rank: number;
   estimatedMdp: number;
   weightFormula: string;
@@ -56,4 +65,4 @@ FeatureCollection<Polygon, {
 }>
 ```
 
-El backend debe devolver celdas ya recortadas a CDMX. Si todavía no hay datos reales, puede seguir usando semillas simuladas, pero debe conservar el shape de propiedades.
+El backend debe devolver celdas ya recortadas a CDMX. Si todavía no hay datos reales, puede seguir usando semillas simuladas, pero debe conservar el shape de propiedades y el mismo criterio de frontera oficial.

@@ -3,10 +3,10 @@ import {
   featureCollection,
   intersect,
   point,
-  polygon,
   voronoi,
 } from "@turf/turf";
-import type { Feature, FeatureCollection, Point, Polygon } from "geojson";
+import cdmxBoundaryGeoJson from "./cdmx-boundary.json";
+import type { Feature, FeatureCollection, MultiPolygon, Point, Polygon } from "geojson";
 
 export type VoronoiEventType =
   | "fiestas"
@@ -28,6 +28,15 @@ export type VoronoiCellProperties = {
   weightFormula: string;
   topVariables: string[];
 };
+
+type CdmxBoundaryProperties = {
+  cve_ent?: string;
+  cvegeo?: string;
+  nomgeo?: string;
+  name: string;
+};
+
+type VoronoiGeometry = Polygon | MultiPolygon;
 
 type SeedSite = {
   id: string;
@@ -110,27 +119,17 @@ export const voronoiEventProfiles: Record<
   },
 };
 
-export const cdmxBoundary = polygon(
-  [
-    [
-      [-99.365, 19.315],
-      [-99.333, 19.392],
-      [-99.318, 19.496],
-      [-99.258, 19.564],
-      [-99.149, 19.592],
-      [-99.032, 19.576],
-      [-98.958, 19.505],
-      [-98.943, 19.396],
-      [-98.974, 19.306],
-      [-99.021, 19.238],
-      [-99.108, 19.186],
-      [-99.216, 19.207],
-      [-99.299, 19.253],
-      [-99.365, 19.315],
-    ],
-  ],
-  { name: "Ciudad de México" },
-);
+const [officialCdmxBoundary] = (
+  cdmxBoundaryGeoJson as FeatureCollection<Polygon, Omit<CdmxBoundaryProperties, "name">>
+).features;
+
+export const cdmxBoundary: Feature<Polygon, CdmxBoundaryProperties> = {
+  ...officialCdmxBoundary,
+  properties: {
+    ...officialCdmxBoundary.properties,
+    name: officialCdmxBoundary.properties.nomgeo ?? "Ciudad de México",
+  },
+};
 
 export const voronoiSeedSites: SeedSite[] = [
   {
@@ -477,9 +476,11 @@ export const voronoiSeedSites: SeedSite[] = [
   },
 ];
 
+export const VORONOI_SEED_COUNT = voronoiSeedSites.length;
+
 export function buildVoronoiGeoJson(
   eventType: VoronoiEventType,
-): FeatureCollection<Polygon, VoronoiCellProperties> {
+): FeatureCollection<VoronoiGeometry, VoronoiCellProperties> {
   const scoredSeeds = voronoiSeedSites
     .map((site) => ({ site, score: scoreSeed(site, eventType) }))
     .sort((a, b) => b.score - a.score);
@@ -512,7 +513,7 @@ export function buildVoronoiGeoJson(
       }
 
       const clipped = intersect(
-        featureCollection([cell as Feature<Polygon>, cdmxBoundary as Feature<Polygon>]),
+        featureCollection([cell as Feature<VoronoiGeometry>, cdmxBoundary]),
       );
 
       if (!clipped || !clipped.geometry) {
@@ -521,11 +522,11 @@ export function buildVoronoiGeoJson(
 
       return {
         type: "Feature" as const,
-        geometry: clipped.geometry,
+        geometry: clipped.geometry as VoronoiGeometry,
         properties: cell.properties as VoronoiCellProperties,
       };
     })
-    .filter((cell): cell is Feature<Polygon, VoronoiCellProperties> => Boolean(cell));
+    .filter((cell): cell is Feature<VoronoiGeometry, VoronoiCellProperties> => Boolean(cell));
 
   return featureCollection(clippedFeatures);
 }
