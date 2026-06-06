@@ -12,7 +12,7 @@ MercurIA es una plataforma de inteligencia economica para analizar, planear y mo
 
 El frontend vive en `frontend/`. La ruta `/` muestra la landing page y `/map` abre el mapa Mapbox a pantalla completa con datos sinteticos locales mientras el backend se conecta.
 
-Aviso para el equipo frontend: cuando empiecen a consumir endpoints reales, deben levantar el backend al mismo tiempo en `http://localhost:8000`. Mantengan `NEXT_PUBLIC_API_URL=http://localhost:8000` en `frontend/.env.local` para que la app apunte a FastAPI durante desarrollo.
+Aviso para el equipo frontend: cuando empiecen a consumir endpoints reales, deben levantar el backend al mismo tiempo en `http://localhost:8000`. Mantengan `NEXT_PUBLIC_API_URL=http://localhost:8000` y `NEXT_PUBLIC_MAPBOX_TOKEN` en `frontend/.env.local` para que la app apunte a FastAPI y Mapbox durante desarrollo.
 
 ```bash
 cd frontend
