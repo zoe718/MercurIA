@@ -1,5 +1,7 @@
 from fastapi.testclient import TestClient
 
+import app.services.anthropic_service as anthropic_module
+from app.core.config import Settings
 from app.main import app
 from app.services.anthropic_service import AnthropicService
 
@@ -112,7 +114,12 @@ def test_simulate_returns_confidence_bands():
     assert payload["confidenceInterval"]["high"] > payload["confidenceInterval"]["expected"]
 
 
-def test_ai_endpoint_returns_503_without_anthropic_key():
+def test_ai_endpoint_returns_503_without_anthropic_key(monkeypatch):
+    monkeypatch.setattr(
+        anthropic_module,
+        "get_settings",
+        lambda: Settings(anthropic_api_key=None),
+    )
     response = client.post(
         "/api/notifications/draft",
         json={"eventId": "evt-fiestas-2024", "sector": "Restaurantes"},
