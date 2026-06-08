@@ -424,7 +424,7 @@ Solucion:
 
 Para soporte tecnico o coordinacion de despliegues:
 
-- Equipo: `<TEAM_NAME>`
-- Email: `<CONTACT_EMAIL>`
+- Equipo: UPIIXIA
+- Email: upiixia@gmail.com
 - Repositorio: `https://github.com/zoe718/MercurIA`
 - Demo en produccion: `https://mercur-ia.vercel.app`
