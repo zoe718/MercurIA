@@ -133,7 +133,7 @@ cp backend/.env.example backend/.env
 |----------------------|---------|------------------------------------------------|---------------------------------------------|
 |`ANTHROPIC_API_KEY`   |Si       |`sk-ant-xxxxxxxxx`                              |API key de Anthropic para funciones de IA.   |
 |`MAPBOX_TOKEN`        |Si       |`pk.xxxxxxxxx`                                  |Token de Mapbox para geoespacial en backend. |
-|`DATABASE_URL`        |No       |`******localhost:5432/mercuria`|Conexion a PostgreSQL + PostGIS.             |
+|`DATABASE_URL`        |No       |`postgresql://user:pass@localhost:5432/mercuria`|Conexion a PostgreSQL + PostGIS.             |
 |`REDIS_URL`           |No       |`redis://localhost:6379/0`                      |Conexion a Redis para cache de Voronoi.      |
 |`USE_SYNTHETIC_DATA`  |No       |`true`                                          |`true` para demo sin APIs externas.          |
 |`USE_INEGI_API`       |No       |`false`                                         |Activa cliente INEGI DENUE.                  |
